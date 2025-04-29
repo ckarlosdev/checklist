@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tool QR Code Reader</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #reader { width: 300px; margin: auto; }
+    #toolInfo { margin-top: 20px; padding: 10px; border: 1px solid #ccc; }
+  </style>
+  <!-- Include html5-qrcode -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+
+<h1>Scan Tool QR Code</h1>
+
+<div id="reader"></div>
+
+<div id="toolInfo" style="display:none;">
+  <h2>Tool Information</h2>
+  <pre id="infoText"></pre>
+</div>
+
+<script>
+  function onScanSuccess(decodedText, decodedResult) {
+    console.log(`Code matched = ${decodedText}`, decodedResult);
+
+    // Show the info
+    document.getElementById('toolInfo').style.display = 'block';
+    document.getElementById('infoText').textContent = decodedText;
+
+    // Stop scanning once a code is found
+    html5QrcodeScanner.clear();
+  }
+
+  function onScanFailure(error) {
+    // Ignore scan errors
+  }
+
+  const html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", { fps: 10, qrbox: 250 });
+    
+  html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+</script>
+
+</body>
+</html>
